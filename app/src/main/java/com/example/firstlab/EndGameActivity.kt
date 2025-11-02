@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.firstlab.ui.theme.FirstLabTheme
@@ -36,14 +37,18 @@ class EndGameActivity : ComponentActivity() {
         val reachedMaxLevel = intent.getBooleanExtra("reachedMaxLevel", false)
 
         // Recuperar también el nombre del jugador
-        val playerName = intent.getStringExtra(LauncherActivity.USERNAME_KEY) ?: "Jugador"
+        val playerName = intent.getStringExtra(LauncherActivity.USERNAME_KEY) ?: getString(R.string.default_player_name)
 
         // Establecer el contenido usando Jetpack Compose
         setContent {
             FirstLabTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    topBar = { CenterAlignedTopAppBar(title = { Text(text = "End Game") }) }
+                    topBar = {
+                        CenterAlignedTopAppBar(
+                            title = { Text(text = stringResource(R.string.title_end_game)) }
+                        )
+                    }
                 ) { innerPadding ->
                     EndGameContent(
                         name = playerName,        // Se pasa el nombre al Composable
@@ -59,12 +64,12 @@ class EndGameActivity : ComponentActivity() {
     }
 
     /**
-     * Funcion que crea y lanza un Intent para enviar los datos del jugador.
+     * Función que crea y lanza un Intent para enviar los datos del jugador.
      */
     private fun sendGameData(name: String, score: Int, level: Int) {
-        // Crear el asunto y el cuerpo del mensaje
-        val subject = "Puntuación del jugador $name"
-        val body = "El jugador $name ha obtenido una puntuación de $score puntos y ha alcanzado el nivel $level."
+        // Crear el asunto y el cuerpo del mensaje usando strings.xml
+        val subject = getString(R.string.intent_subject, name)
+        val body = getString(R.string.intent_body, name, score, level)
 
         // Crear un Intent implícito de envío de texto
         val sendIntent = Intent(Intent.ACTION_SEND).apply {
@@ -74,7 +79,7 @@ class EndGameActivity : ComponentActivity() {
         }
 
         // Mostrar el selector de aplicaciones para compartir
-        val shareIntent = Intent.createChooser(sendIntent, "Enviar puntuación con...")
+        val shareIntent = Intent.createChooser(sendIntent, getString(R.string.intent_chooser_title))
         startActivity(shareIntent)
     }
 }
@@ -98,13 +103,13 @@ fun EndGameContent(
         // Mostrar mensaje distinto según cómo llegó el jugador
         if (reachedMaxLevel) {
             Text(
-                text = "¡Felicidades, alcanzaste el nivel 10!",
+                text = stringResource(R.string.text_congratulations),
                 style = MaterialTheme.typography.headlineLarge,
                 textAlign = TextAlign.Center
             )
         } else {
             Text(
-                text = "Juego terminado. Pulsa el botón para volver a empezar.",
+                text = stringResource(R.string.text_end_message),
                 style = MaterialTheme.typography.headlineLarge,
                 textAlign = TextAlign.Center
             )
@@ -113,8 +118,8 @@ fun EndGameContent(
         Spacer(modifier = Modifier.height(24.dp))
 
         // Mostrar información del juego (puntuación y nivel)
-        Text(text = "Score: $score", style = MaterialTheme.typography.headlineMedium)
-        Text(text = "Level: $level", style = MaterialTheme.typography.headlineMedium)
+        Text(text = stringResource(R.string.text_score, score), style = MaterialTheme.typography.headlineMedium)
+        Text(text = stringResource(R.string.text_level, level), style = MaterialTheme.typography.headlineMedium)
 
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -129,7 +134,7 @@ fun EndGameContent(
             // Imagen mostrada desde los recursos
             Image(
                 painter = painterResource(id = R.drawable.gameover),
-                contentDescription = "Imagen de fin del juego",
+                contentDescription = stringResource(R.string.content_description_game_over),
                 modifier = Modifier
                     .size(120.dp)
                     .padding(end = 16.dp)
@@ -137,8 +142,9 @@ fun EndGameContent(
 
             // Botón que lanza el Intent para compartir los datos del jugador
             Button(onClick = onSendDataClick) {
-                Text(text = "Enviar datos...")
+                Text(text = stringResource(R.string.btn_send_data))
             }
         }
     }
 }
+

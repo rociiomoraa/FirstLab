@@ -34,6 +34,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.firstlab.ui.theme.FirstLabTheme
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.colorResource
 import androidx.compose.material3.MaterialTheme
 
 
@@ -176,9 +178,9 @@ fun GameStateDisplay(
     // Determinar el color de fondo según el nivel actual.
     // Rojo: niveles 0–2, Naranja: 3–6, Verde oscuro: 7–9.
     val backgroundColor = when (level) {
-        in 0..2 -> Color.Red
-        in 3..6 -> Color(0xFFFFA500) // Naranja (código hexadecimal)
-        in 7..9 -> Color(0xFF006400) // Verde oscuro (DarkGreen)
+        in 0..2 -> colorResource(id = R.color.level_red)
+        in 3..6 -> colorResource(id = R.color.level_orange)
+        in 7..9 -> colorResource(id = R.color.level_dark_green)
         else -> Color.Gray // Color por defecto si el nivel no entra en los rangos
     }
 
@@ -193,7 +195,8 @@ fun GameStateDisplay(
                 .padding(8.dp),
             horizontalArrangement = Arrangement.Center
         ) {
-            Greeting(name)
+            // Texto de saludo usando stringResource con el nombre del jugador
+            Text(text = stringResource(id = R.string.text_hello, name))
         }
 
         // Segunda fila con dos columnas
@@ -212,9 +215,9 @@ fun GameStateDisplay(
                     .background(backgroundColor)
                     .padding(8.dp)
             ) {
-                ShowVariables("Score", score)
+                Text(text = stringResource(R.string.text_score, score))
                 Spacer(Modifier.height(8.dp))
-                ShowVariables("Level", level)
+                Text(text = stringResource(R.string.text_level, level))
             }
 
             Spacer(Modifier.width(8.dp))
@@ -230,7 +233,7 @@ fun GameStateDisplay(
             ) {
                 // Al pulsar el botón, se incrementa la puntuación en un número aleatorio
                 // entre 1 y el valor actual del nivel del jugador.
-                StandardButton("Increase Score") {
+                StandardButton(stringResource(id = R.string.btn_increase_score)) {
                     val result = onIncButtonClick(1)
                     score = result[MainActivity.SCORE_KEY]!!
                     level = result[MainActivity.LEVEL_KEY]!!
@@ -246,7 +249,7 @@ fun GameStateDisplay(
                 // Nuevo botón para decrementar la puntuación.
                 // Cada vez que se pulsa, la puntuación disminuye en el doble del nivel actual (2 * level).
                 // Si la puntuación queda negativa, se ajusta automáticamente a 0.
-                StandardButton("Decrease Score") {
+                StandardButton(stringResource(id = R.string.btn_decrease_score)) {
                     val decremento = 2 * level
                     score = (score - decremento).coerceAtLeast(0)
                     level = score / 10
@@ -263,7 +266,7 @@ fun GameStateDisplay(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "¡Vas en buen camino!",
+                    text = stringResource(id = R.string.text_motivational),
                     color = Color.Black,
                     style = MaterialTheme.typography.headlineSmall
                 )
@@ -277,7 +280,7 @@ fun GameStateDisplay(
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.Center
         ) {
-            StandardButton("End Game") {
+            StandardButton(stringResource(id = R.string.btn_end_game)) {
                 // Acción al hacer clic: abrir la pantalla de fin del juego manualmente.
                 // También se envían los datos actuales de puntuación y nivel.
                 // En este caso, se pasa false porque el jugador terminó por decisión propia.

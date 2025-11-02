@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -92,7 +93,7 @@ fun LauncherScreen(onPlayClick: (String) -> Unit) {
     ) {
         // Cabecera (título grande de la app)
         Text(
-            text = "🎮 Super Game Counter", // Título del juego.
+            text = stringResource(R.string.title_launcher), // Recurso de texto
             fontSize = 32.sp, // Tamaño grande, estilo H1.
             fontWeight = FontWeight.Bold, // Texto en negrita.
             textAlign = TextAlign.Center, // Centrado horizontalmente.
@@ -105,7 +106,7 @@ fun LauncherScreen(onPlayClick: (String) -> Unit) {
         OutlinedTextField(
             value = username, // Valor actual del texto.
             onValueChange = { username = it }, // Actualiza el estado cuando el usuario escribe.
-            label = { Text("Introduce tu nombre") }, // Etiqueta visible dentro del campo.
+            label = { Text(stringResource(R.string.btn_play)) }, // Etiqueta desde recursos
             singleLine = true, // Solo una línea de texto.
             modifier = Modifier
                 .fillMaxWidth() // Ocupa todo el ancho disponible.
@@ -121,7 +122,7 @@ fun LauncherScreen(onPlayClick: (String) -> Unit) {
             enabled = username.isNotBlank(),
             modifier = Modifier.testTag("playButton") // Identificador del botón.
         ) {
-            Text("Jugar")
+            Text(stringResource(R.string.btn_play)) // Texto desde strings.xml
         }
     }
 }

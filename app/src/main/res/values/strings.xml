@@ -1,4 +1,36 @@
 <resources>
-    <string name="app_name">FirstLab</string>
-    <string name="title_activity_end_game">EndGameActivity</string>
+    <!-- Nombre de la app -->
+    <string name="app_name">Super Game Counter</string>
+
+    <!-- Textos comunes -->
+    <string name="title_end_game">End Game</string>
+    <string name="title_launcher">Super Game Counter</string>
+
+    <!-- Botones -->
+    <string name="btn_increase_score">Increase Score</string>
+    <string name="btn_decrease_score">Decrease Score</string>
+    <string name="btn_end_game">End Game</string>
+    <string name="btn_play">Jugar</string>
+    <string name="btn_send_data">Enviar datos...</string>
+
+    <!-- Textos informativos -->
+    <string name="text_hello">Hello %1$s!</string>
+    <string name="text_score">Score: %1$d</string>
+    <string name="text_level">Level: %1$d</string>
+    <string name="text_motivational">¡Vas en buen camino!</string>
+
+    <!-- Mensajes de EndGame -->
+    <string name="text_game_over">Game Over!</string>
+    <string name="text_congratulations">¡Felicidades, alcanzaste el nivel 10!</string>
+    <string name="text_end_message">Juego terminado. Pulsa el botón para volver a empezar.</string>
+
+    <!-- Intent de envío -->
+    <string name="intent_subject">Puntuación del jugador %1$s</string>
+    <string name="intent_body">El jugador %1$s ha obtenido una puntuación de %2$d puntos y ha alcanzado el nivel %3$d.</string>
+    <string name="intent_chooser_title">Enviar puntuación con...</string>
+
+    <!-- Valores adicionales -->
+    <string name="default_player_name">Jugador</string>
+    <string name="content_description_game_over">Imagen de fin del juego</string>
 </resources>
+
