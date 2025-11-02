@@ -165,6 +165,15 @@ fun GameStateDisplay(
         onEndGameButtonClick()
     }
 
+    // Determinar el color de fondo según el nivel actual.
+    // Rojo: niveles 0–2, Naranja: 3–6, Verde oscuro: 7–9.
+    val backgroundColor = when (level) {
+        in 0..2 -> Color.Red
+        in 3..6 -> Color(0xFFFFA500) // Naranja (código hexadecimal)
+        in 7..9 -> Color(0xFF006400) // Verde oscuro (DarkGreen)
+        else -> Color.Gray // Color por defecto si el nivel no entra en los rangos
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -188,10 +197,11 @@ fun GameStateDisplay(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             // Primera columna con dos elementos y separador
+            // El color de fondo cambia dinámicamente según el nivel.
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .background(Color.Red)
+                    .background(backgroundColor)
                     .padding(8.dp)
             ) {
                 ShowVariables("Score", score)
@@ -267,10 +277,6 @@ fun GameStateDisplay(
         }
     }
 }
-
-
-
-
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
