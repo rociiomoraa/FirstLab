@@ -43,7 +43,9 @@ class MainActivity : ComponentActivity() {
         const val LEVEL_KEY = "level"
     }
 
-    private val name : String= "Santos"
+    // Variable que almacena el nombre del usuario recibido desde LauncherActivity.
+    // Se usa 'var' en lugar de 'val' para poder asignarle el valor del intent en tiempo de ejecución.
+    private var name: String = ""
     private var score : Int = 0
     private var level : Int = 0
 
@@ -65,6 +67,10 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Recuperamos el nombre de usuario que se envió desde la LauncherActivity.
+        // Si no se recibe, se utiliza "Jugador" por defecto.
+        name = intent.getStringExtra(LauncherActivity.USERNAME_KEY) ?: "Jugador"
 
         savedInstanceState?.let { instance ->
             score = instance.getInt(SCORE_KEY,0)

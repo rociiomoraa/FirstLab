@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Archivo AndroidManifest.xml
+
+    Este archivo describe la configuración principal de la aplicación Android.
+    Define las actividades, permisos, temas, iconos y el punto de entrada (launcher) de la app.
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!--
+        Nodo <application>:
+        Contiene toda la información global de la aplicación:
+        iconos, tema visual, nombre y las actividades que la componen.
+    -->
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,22 +23,53 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FirstLab"
         tools:targetApi="31">
+
+        <!--
+            Actividad principal (LauncherActivity):
+            Es la primera pantalla que se muestra al abrir la aplicación.
+            Contiene el título del juego, un campo de texto para el nombre del usuario
+            y un botón "Jugar" que abre la MainActivity.
+        -->
+        <activity
+            android:name=".LauncherActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.FirstLab">
+            <!--
+                El intent-filter define esta actividad como el punto de entrada de la app:
+                - MAIN: indica que es la actividad principal.
+                - LAUNCHER: la hace visible en el menú de aplicaciones del dispositivo.
+            -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
+            MainActivity:
+            Segunda actividad del proyecto.
+            Se abre cuando el usuario pulsa "Jugar" en la LauncherActivity.
+            En esta pantalla se maneja la puntuación y el nivel del jugador.
+        -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.FirstLab" />
+
+        <!--
+            EndGameActivity:
+            Tercera actividad del proyecto.
+            Se muestra cuando el jugador termina la partida o alcanza el nivel máximo.
+            Aquí se pueden visualizar los resultados finales, mensajes personalizados y otros elementos finales del juego.
+        -->
         <activity
             android:name=".EndGameActivity"
             android:exported="false"
             android:label="@string/title_activity_end_game"
             android:theme="@style/Theme.FirstLab" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.FirstLab">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
