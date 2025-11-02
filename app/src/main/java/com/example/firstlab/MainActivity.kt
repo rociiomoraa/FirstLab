@@ -50,12 +50,23 @@ class MainActivity : ComponentActivity() {
     private var level : Int = 0
 
 
-    private val incrementScoreAndLevel : (Int) -> Map<String,Int> = { inc ->
-        score += inc
+    // Función lambda que incrementa la puntuación y recalcula el nivel.
+    // Ahora el incremento es un número aleatorio entre 1 y el valor actual del nivel.
+    // Si el nivel es 0 (inicio del juego), se usa 1 como mínimo para evitar errores.
+    private val incrementScoreAndLevel: (Int) -> Map<String, Int> = {
+        // Calcula el rango de incremento (entre 1 y el nivel actual o 1 si nivel es 0)
+        val incremento = (1..(if (level > 0) level else 1)).random()
+
+        // Suma el incremento al score actual
+        score += incremento
+
+        // Calcula el nuevo nivel (1 nivel cada 10 puntos)
         level = score / 10
-        //mapOf(Pair("score", score), Pair("level", level))
+
+        // Devuelve los valores actualizados como mapa
         mapOf(SCORE_KEY to score, LEVEL_KEY to level)
     }
+
 
     private val goToEndGameActivity : () -> Unit =  {
         val intent = Intent(this, EndGameActivity::class.java)
@@ -191,6 +202,8 @@ fun GameStateDisplay(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // Al pulsar el botón, se incrementa la puntuación en un número aleatorio
+                // entre 1 y el valor actual del nivel del jugador.
                 StandardButton("Increase Score") {
                     val result = onIncButtonClick(1)
                     score = result[MainActivity.SCORE_KEY]!!
