@@ -4,22 +4,19 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.firstlab.ui.theme.FirstLabTheme
 
@@ -34,9 +31,7 @@ class EndGameActivity : ComponentActivity() {
         val score = intent.getIntExtra(MainActivity.SCORE_KEY, 0)
         val level = intent.getIntExtra(MainActivity.LEVEL_KEY, 0)
 
-        // Nuevo valor booleano que indica cómo terminó el juego:
-        // true -> alcanzó el nivel 10 automáticamente
-        // false -> terminó manualmente con el botón "End Game"
+        // Valor booleano que indica cómo terminó el juego
         val reachedMaxLevel = intent.getBooleanExtra("reachedMaxLevel", false)
 
         // Establecer el contenido usando Jetpack Compose
@@ -46,7 +41,6 @@ class EndGameActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     topBar = { CenterAlignedTopAppBar(title = { Text(text = "End Game") }) }
                 ) { innerPadding ->
-                    // Mostrar los valores recibidos y el mensaje personalizado
                     EndGameContent(
                         score = score,
                         level = level,
@@ -68,7 +62,6 @@ fun EndGameContent(score: Int, level: Int, reachedMaxLevel: Boolean, modifier: M
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-
         // Mostrar mensaje distinto según cómo llegó el jugador
         if (reachedMaxLevel) {
             Text(
@@ -89,5 +82,34 @@ fun EndGameContent(score: Int, level: Int, reachedMaxLevel: Boolean, modifier: M
         // Mostrar información del juego (puntuación y nivel)
         Text(text = "Score: $score", style = MaterialTheme.typography.headlineMedium)
         Text(text = "Level: $level", style = MaterialTheme.typography.headlineMedium)
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // Fila con la imagen y el botón "Enviar datos..."
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Imagen mostrada desde los recursos
+            // Asegúrate de tener una imagen en res/drawable
+            Image(
+                painter = painterResource(id = R.drawable.gameover),
+                contentDescription = "Imagen de fin del juego",
+                modifier = Modifier
+                    .size(120.dp)
+                    .padding(end = 16.dp)
+            )
+
+            // Botón que servirá para enviar los datos del jugador (nombre, score, nivel)
+            Button(onClick = {
+                // En esta actividad solo lo colocamos visualmente.
+                // La funcionalidad de envío real se implementará en la siguiente actividad.
+            }) {
+                Text(text = "Enviar datos...")
+            }
+        }
     }
 }
