@@ -70,12 +70,17 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    private val goToEndGameActivity : () -> Unit =  {
+    // Ahora la función recibe un parámetro booleano que indica
+    // si el jugador llegó al nivel máximo o terminó manualmente.
+    private val goToEndGameActivity: (Boolean) -> Unit = { reachedMaxLevel ->
         val intent = Intent(this, EndGameActivity::class.java)
         intent.putExtra(SCORE_KEY, score)
         intent.putExtra(LEVEL_KEY, level)
+        // Nuevo valor booleano que distingue la forma de llegar al final del juego.
+        intent.putExtra("reachedMaxLevel", reachedMaxLevel)
         startActivity(intent)
     }
+
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -154,15 +159,15 @@ fun GameStateDisplay(
     initScore: Int,
     initLevel: Int,
     modifier: Modifier = Modifier,
-    onIncButtonClick : (Int) -> Map<String,Int>,
-    onEndGameButtonClick : () -> Unit
+    onIncButtonClick: (Int) -> Map<String, Int>,
+    onEndGameButtonClick: (Boolean) -> Unit // Cambiado para aceptar un booleano
 ) {
     var score by remember { mutableIntStateOf(initScore) }
     var level by remember { mutableIntStateOf(initLevel) }
 
     // Si el jugador alcanza el nivel 10 o superior, se abre directamente la pantalla de fin del juego.
     if (level >= 10) {
-        onEndGameButtonClick()
+        onEndGameButtonClick(true)
     }
 
     // Determinar el color de fondo según el nivel actual.
@@ -229,7 +234,7 @@ fun GameStateDisplay(
 
                     // Si el jugador llega al nivel 10 tras incrementar, se lanza la pantalla de fin del juego.
                     if (level >= 10) {
-                        onEndGameButtonClick()
+                        onEndGameButtonClick(true)
                     }
                 }
 
@@ -272,7 +277,8 @@ fun GameStateDisplay(
             StandardButton("End Game") {
                 // Acción al hacer clic: abrir la pantalla de fin del juego manualmente.
                 // También se envían los datos actuales de puntuación y nivel.
-                onEndGameButtonClick()
+                // En este caso, se pasa false porque el jugador terminó por decisión propia.
+                onEndGameButtonClick(false)
             }
         }
     }
