@@ -160,6 +160,11 @@ fun GameStateDisplay(
     var score by remember { mutableIntStateOf(initScore) }
     var level by remember { mutableIntStateOf(initLevel) }
 
+    // Si el jugador alcanza el nivel 10 o superior, se abre directamente la pantalla de fin del juego.
+    if (level >= 10) {
+        onEndGameButtonClick()
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -211,6 +216,11 @@ fun GameStateDisplay(
                     val result = onIncButtonClick(1)
                     score = result[MainActivity.SCORE_KEY]!!
                     level = result[MainActivity.LEVEL_KEY]!!
+
+                    // Si el jugador llega al nivel 10 tras incrementar, se lanza la pantalla de fin del juego.
+                    if (level >= 10) {
+                        onEndGameButtonClick()
+                    }
                 }
 
                 Spacer(Modifier.height(16.dp)) // Espacio visual entre los botones
@@ -226,7 +236,6 @@ fun GameStateDisplay(
             }
         }
 
-        // Actividad 4 (ajustada): mostrar el mensaje en el centro de la pantalla.
         // Si el jugador llega al nivel 5, se muestra un texto motivacional
         // centrado horizontalmente y con separación vertical.
         if (level == 5) {
@@ -251,12 +260,14 @@ fun GameStateDisplay(
             horizontalArrangement = Arrangement.Center
         ) {
             StandardButton("End Game") {
-                // Acción al hacer clic: abrir EndGameActivity
+                // Acción al hacer clic: abrir la pantalla de fin del juego manualmente.
+                // También se envían los datos actuales de puntuación y nivel.
                 onEndGameButtonClick()
             }
         }
     }
 }
+
 
 
 
