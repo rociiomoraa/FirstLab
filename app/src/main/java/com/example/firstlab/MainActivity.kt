@@ -209,6 +209,17 @@ fun GameStateDisplay(
                     score = result[MainActivity.SCORE_KEY]!!
                     level = result[MainActivity.LEVEL_KEY]!!
                 }
+
+                Spacer(Modifier.height(16.dp)) // Espacio visual entre los botones
+
+                // Nuevo botón para decrementar la puntuación.
+                // Cada vez que se pulsa, la puntuación disminuye en el doble del nivel actual (2 * level).
+                // Si la puntuación queda negativa, se ajusta automáticamente a 0.
+                StandardButton("Decrease Score") {
+                    val decremento = 2 * level
+                    score = (score - decremento).coerceAtLeast(0)
+                    level = score / 10
+                }
             }
         }
         Row(
