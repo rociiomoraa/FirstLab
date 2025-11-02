@@ -34,6 +34,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.firstlab.ui.theme.FirstLabTheme
+import androidx.compose.material3.MaterialTheme
+
 
 class MainActivity : ComponentActivity() {
 
@@ -157,6 +159,7 @@ fun GameStateDisplay(
 ) {
     var score by remember { mutableIntStateOf(initScore) }
     var level by remember { mutableIntStateOf(initLevel) }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -175,7 +178,7 @@ fun GameStateDisplay(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(intrinsicSize = IntrinsicSize.Min )
+                .height(IntrinsicSize.Min)
                 .padding(8.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -222,6 +225,24 @@ fun GameStateDisplay(
                 }
             }
         }
+
+        // Actividad 4 (ajustada): mostrar el mensaje en el centro de la pantalla.
+        // Si el jugador llega al nivel 5, se muestra un texto motivacional
+        // centrado horizontalmente y con separación vertical.
+        if (level == 5) {
+            Spacer(Modifier.height(40.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "¡Vas en buen camino!",
+                    color = Color.Black,
+                    style = MaterialTheme.typography.headlineSmall
+                )
+            }
+        }
+
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -236,6 +257,8 @@ fun GameStateDisplay(
         }
     }
 }
+
+
 
 
 @Composable
