@@ -1,5 +1,6 @@
 package com.example.firstlab
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -34,6 +35,9 @@ class EndGameActivity : ComponentActivity() {
         // Valor booleano que indica cómo terminó el juego
         val reachedMaxLevel = intent.getBooleanExtra("reachedMaxLevel", false)
 
+        // Recuperar también el nombre del jugador
+        val playerName = intent.getStringExtra(LauncherActivity.USERNAME_KEY) ?: "Jugador"
+
         // Establecer el contenido usando Jetpack Compose
         setContent {
             FirstLabTheme {
@@ -42,19 +46,48 @@ class EndGameActivity : ComponentActivity() {
                     topBar = { CenterAlignedTopAppBar(title = { Text(text = "End Game") }) }
                 ) { innerPadding ->
                     EndGameContent(
+                        name = playerName,        // Se pasa el nombre al Composable
                         score = score,
                         level = level,
                         reachedMaxLevel = reachedMaxLevel,
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding),
+                        onSendDataClick = { sendGameData(playerName, score, level) } // Acción del botón
                     )
                 }
             }
         }
     }
+
+    /**
+     * Funcion que crea y lanza un Intent para enviar los datos del jugador.
+     */
+    private fun sendGameData(name: String, score: Int, level: Int) {
+        // Crear el asunto y el cuerpo del mensaje
+        val subject = "Puntuación del jugador $name"
+        val body = "El jugador $name ha obtenido una puntuación de $score puntos y ha alcanzado el nivel $level."
+
+        // Crear un Intent implícito de envío de texto
+        val sendIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_SUBJECT, subject)
+            putExtra(Intent.EXTRA_TEXT, body)
+        }
+
+        // Mostrar el selector de aplicaciones para compartir
+        val shareIntent = Intent.createChooser(sendIntent, "Enviar puntuación con...")
+        startActivity(shareIntent)
+    }
 }
 
 @Composable
-fun EndGameContent(score: Int, level: Int, reachedMaxLevel: Boolean, modifier: Modifier = Modifier) {
+fun EndGameContent(
+    name: String,
+    score: Int,
+    level: Int,
+    reachedMaxLevel: Boolean,
+    modifier: Modifier = Modifier,
+    onSendDataClick: () -> Unit // Acción del botón "Enviar datos..."
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -94,7 +127,6 @@ fun EndGameContent(score: Int, level: Int, reachedMaxLevel: Boolean, modifier: M
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Imagen mostrada desde los recursos
-            // Asegúrate de tener una imagen en res/drawable
             Image(
                 painter = painterResource(id = R.drawable.gameover),
                 contentDescription = "Imagen de fin del juego",
@@ -103,11 +135,8 @@ fun EndGameContent(score: Int, level: Int, reachedMaxLevel: Boolean, modifier: M
                     .padding(end = 16.dp)
             )
 
-            // Botón que servirá para enviar los datos del jugador (nombre, score, nivel)
-            Button(onClick = {
-                // En esta actividad solo lo colocamos visualmente.
-                // La funcionalidad de envío real se implementará en la siguiente actividad.
-            }) {
+            // Botón que lanza el Intent para compartir los datos del jugador
+            Button(onClick = onSendDataClick) {
                 Text(text = "Enviar datos...")
             }
         }

@@ -78,8 +78,11 @@ class MainActivity : ComponentActivity() {
         intent.putExtra(LEVEL_KEY, level)
         // Nuevo valor booleano que distingue la forma de llegar al final del juego.
         intent.putExtra("reachedMaxLevel", reachedMaxLevel)
+        // Enviar también el nombre del jugador para usarlo en EndGameActivity
+        intent.putExtra(LauncherActivity.USERNAME_KEY, name)
         startActivity(intent)
     }
+
 
 
     @OptIn(ExperimentalMaterial3Api::class)
