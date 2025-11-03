@@ -67,7 +67,7 @@
         <activity
             android:name=".EndGameActivity"
             android:exported="false"
-            android:label="@string/title_activity_end_game"
+            android:label="@string/title_end_game"
             android:theme="@style/Theme.FirstLab" />
 
     </application>
